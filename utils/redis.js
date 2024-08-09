@@ -1,9 +1,9 @@
 import { promisify } from 'util';
 import { createClient } from 'redis';
 
-//Represents a Redis client.
-//creates a new Redisclient instance
+// Represents a Redis client.
 class RedisClient {
+  // Creates a new RedisClient instance.
   constructor() {
     this.client = createClient();
     this.isClientConnected = true;
@@ -16,21 +16,23 @@ class RedisClient {
     });
   }
 
-  //Checks connection to Redis server is active, @returns {boolean}
+  // Checks if this client's connection to the Redis server is active.
   isAlive() {
     return this.isClientConnected;
   }
 
+  // Retrieves the value of a given key.
   async get(key) {
     return promisify(this.client.GET).bind(this.client)(key);
   }
 
+  // Stores a key and its value along with an expiration time.
   async set(key, value, duration) {
     await promisify(this.client.SETEX)
       .bind(this.client)(key, duration, value);
   }
 
-  //Removes the value of a given key.
+  // Removes the value of a given key.
   async del(key) {
     await promisify(this.client.DEL).bind(this.client)(key);
   }
