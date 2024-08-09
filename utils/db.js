@@ -3,8 +3,13 @@ import mongodb from 'mongodb';
 import Collection from 'mongodb/lib/collection';
 import envLoader from './env_loader';
 
-//Represents a MongoDB client.
+/**
+ * Represents a MongoDB client.
+ */
 class DBClient {
+  /**
+   * Creates a new DBClient instance.
+   */
   constructor() {
     envLoader();
     const host = process.env.DB_HOST || 'localhost';
@@ -16,27 +21,42 @@ class DBClient {
     this.client.connect();
   }
 
-  //Checks if this client's connection to MongoDB server is active.
+  /**
+   * Checks if this client's connection to the MongoDB server is active.
+   * @returns {boolean}
+   */
   isAlive() {
     return this.client.isConnected();
   }
 
-  //Retrieves the num of users in the database.
+  /**
+   * Retrieves the number of users in the database.
+   * @returns {Promise<Number>}
+   */
   async nbUsers() {
     return this.client.db().collection('users').countDocuments();
   }
 
-  //Retrieves the num of files in the database.
+  /**
+   * Retrieves the number of files in the database.
+   * @returns {Promise<Number>}
+   */
   async nbFiles() {
     return this.client.db().collection('files').countDocuments();
   }
 
-  //Retrieves a ref to the `users` collection.
+  /**
+   * Retrieves a reference to the `users` collection.
+   * @returns {Promise<Collection>}
+   */
   async usersCollection() {
     return this.client.db().collection('users');
   }
 
-  //Retrieves a ref to the `files` collection.
+  /**
+   * Retrieves a reference to the `files` collection.
+   * @returns {Promise<Collection>}
+   */
   async filesCollection() {
     return this.client.db().collection('files');
   }
